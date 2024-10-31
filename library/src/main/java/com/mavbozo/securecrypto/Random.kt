@@ -5,6 +5,7 @@ package com.mavbozo.securecrypto
 import android.content.Context
 import android.os.Process
 import android.os.SystemClock
+import android.util.Base64
 import androidx.security.crypto.MasterKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,6 +16,41 @@ sealed interface EntropyQuality {
     data object Hardware : EntropyQuality
     data object Fallback : EntropyQuality
 }
+
+/**
+ * Type-safe wrapper for Base64 encoding flags
+ */
+sealed interface Base64Flags {
+    /** Standard Base64 encoding with padding */
+    data object Default : Base64Flags {
+        internal val value = Base64.DEFAULT
+    }
+
+    /** Standard Base64 encoding without padding */
+    data object NoPadding : Base64Flags {
+        internal val value = Base64.NO_PADDING
+    }
+
+    /** URL-safe Base64 encoding with padding */
+    data object UrlSafe : Base64Flags {
+        internal val value = Base64.URL_SAFE
+    }
+
+    /** URL-safe Base64 encoding without padding */
+    data object UrlSafeNoPadding : Base64Flags {
+        internal val value = Base64.URL_SAFE or Base64.NO_PADDING
+    }
+
+    companion object {
+        internal fun toAndroidFlags(flags: Base64Flags): Int = when (flags) {
+            is Default -> flags.value
+            is NoPadding -> flags.value
+            is UrlSafe -> flags.value
+            is UrlSafeNoPadding -> flags.value
+        }
+    }
+}
+
 
 @JvmInline
 value class SecureBytes private constructor(private val bytes: ByteArray) {
@@ -83,6 +119,35 @@ class Random private constructor(
                 },
                 { error -> Result.failure(error) } // Failure case
             )
+
+        suspend fun generateBase64String(
+            length: Int,
+            flags: Base64Flags = Base64Flags.Default
+        ): Result<String> {
+            require(length > 0) { "Length must be positive" }
+
+            // Calculate required bytes for desired Base64 length
+            val bytesNeeded = (length * 3 + 3) / 4
+
+            return generateBytes(bytesNeeded).fold(
+                onSuccess = { bytes ->
+                    try {
+                        val base64String = Base64.encodeToString(
+                            bytes,
+                            Base64Flags.toAndroidFlags(flags)
+                        )
+
+                        // Trim to exact requested length
+                        Result.success(base64String.substring(0, length))
+                    } finally {
+                        bytes.fill(0)
+                    }
+                },
+                onFailure = { error ->
+                    Result.failure(error)
+                }
+            )
+        }
     }
 
     suspend fun nextBytes(size: Int): Result<ByteArray> = withContext(Dispatchers.Default) {
@@ -204,6 +269,30 @@ class EnhancedRandom private constructor(
                 },
                 { error -> Result.failure(error) } // Failure case
             )
+
+        suspend fun generateEnhancedBase64String(
+            context: Context,
+            length: Int,
+            flags: Base64Flags = Base64Flags.Default
+        ): Result<String> {
+            require(length > 0) { "Length must be positive" }
+
+            return generateEnhancedBytes(context, (length * 3 + 3) / 4).fold(
+                { bytes ->
+                    try {
+                        Result.success(
+                            Base64.encodeToString(
+                                bytes,
+                                Base64Flags.toAndroidFlags(flags)
+                            ).substring(0, length)
+                        )
+                    } finally {
+                        bytes.fill(0)
+                    }
+                },
+                { error -> Result.failure(error) }
+            )
+        }
     }
 
     suspend fun nextBytes(size: Int): Result<ByteArray> = withContext(Dispatchers.Default) {

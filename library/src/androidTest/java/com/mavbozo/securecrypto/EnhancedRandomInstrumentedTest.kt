@@ -1,6 +1,7 @@
 package com.mavbozo.securecrypto
 
 import android.content.Context
+import android.util.Base64
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.Dispatchers
@@ -360,5 +361,168 @@ class EnhancedRandomInstrumentedTest {
 
         assertTrue("Concurrent generations should produce unique results",
             uniqueResults.size == iterations)
+    }
+
+    // Base64 Generation Test
+    @Test
+    fun testEnhancedBase64Generation() = runBlocking {
+        val length = 24 // Standard Base64 length for 18 bytes
+
+        val result = EnhancedRandom.generateEnhancedBase64String(context, length)
+        assertTrue("Base64 generation failed: ${result.exceptionOrNull()}",
+            result.isSuccess)
+
+        val base64String = result.getOrThrow()
+        assertEquals("Generated Base64 string length mismatch",
+            length, base64String.length)
+
+        // Verify it's valid Base64
+        assertTrue("Invalid Base64 format",
+            isValidBase64(base64String))
+    }
+
+    @Test
+    fun testBase64Variants() = runBlocking {
+        val length = 24
+        val variants = listOf(
+            Base64Flags.Default,
+            Base64Flags.NoPadding,
+            Base64Flags.UrlSafe,
+            Base64Flags.UrlSafeNoPadding
+        )
+
+        for (flags in variants) {
+            val result = EnhancedRandom.generateEnhancedBase64String(
+                context, length, flags
+            )
+            assertTrue("Generation failed for $flags: ${result.exceptionOrNull()}",
+                result.isSuccess)
+
+            val base64String = result.getOrThrow()
+            assertEquals("Length mismatch for $flags",
+                length, base64String.length)
+
+            when (flags) {
+                is Base64Flags.Default -> {
+                    assertTrue("Invalid standard Base64 format",
+                        base64String.matches(Regex("[A-Za-z0-9+/=]*")))
+                }
+                is Base64Flags.NoPadding -> {
+                    assertTrue("Invalid unpadded Base64 format",
+                        base64String.matches(Regex("[A-Za-z0-9+/]*")))
+                    assertFalse("Found padding in NoPadding variant",
+                        base64String.contains("="))
+                }
+                is Base64Flags.UrlSafe -> {
+                    assertTrue("Invalid URL-safe Base64 format",
+                        base64String.matches(Regex("[A-Za-z0-9_\\-=]*")))
+                }
+                is Base64Flags.UrlSafeNoPadding -> {
+                    assertTrue("Invalid URL-safe unpadded Base64 format",
+                        base64String.matches(Regex("[A-Za-z0-9_\\-]*")))
+                    assertFalse("Found padding in UrlSafeNoPadding variant",
+                        base64String.contains("="))
+                }
+            }
+        }
+    }
+
+    @Test
+    fun testBase64VariableLengths() = runBlocking {
+        // Test various lengths including non-standard ones
+        val lengths = listOf(8, 16, 24, 32, 40, 44, 64)
+
+        for (length in lengths) {
+            val result = EnhancedRandom.generateEnhancedBase64String(context, length)
+            assertTrue("Failed to generate $length chars: ${result.exceptionOrNull()}",
+                result.isSuccess)
+
+            val base64String = result.getOrThrow()
+            assertEquals("Length mismatch for requested $length chars",
+                length, base64String.length)
+        }
+    }
+
+    @Test
+    fun testDistinctBase64Sequences() = runBlocking {
+        val length = 32
+        // Generate multiple Base64 strings and verify they're different
+        val base64Strings = List(5) {
+            EnhancedRandom.generateEnhancedBase64String(context, length).getOrThrow()
+        }
+
+        val uniqueStrings = base64Strings.toSet()
+        assertEquals("Sequential Base64 generations should produce unique strings",
+            base64Strings.size, uniqueStrings.size)
+    }
+
+    @Test
+    fun testUrlSafeBase64Characters() = runBlocking {
+        val length = 32
+        val result = EnhancedRandom.generateEnhancedBase64String(
+            context,
+            length,
+            Base64Flags.UrlSafe
+        )
+
+        val base64String = result.getOrThrow()
+        assertFalse("URL-safe Base64 should not contain '+'",
+            base64String.contains("+"))
+        assertFalse("URL-safe Base64 should not contain '/'",
+            base64String.contains("/"))
+        assertTrue("URL-safe Base64 should use '-' and '_'",
+            base64String.matches(Regex("[A-Za-z0-9_\\-=]*")))
+    }
+
+    @Test
+    fun testBase64ErrorCases() = runBlocking {
+        // Test negative length
+        try {
+            EnhancedRandom.generateEnhancedBase64String(context, -1)
+            fail("Should throw IllegalArgumentException for negative length")
+        } catch (e: IllegalArgumentException) {
+            assertEquals("Length must be positive", e.message)
+        }
+
+        // Test zero length
+        try {
+            EnhancedRandom.generateEnhancedBase64String(context, 0)
+            fail("Should throw IllegalArgumentException for zero length")
+        } catch (e: IllegalArgumentException) {
+            assertEquals("Length must be positive", e.message)
+        }
+    }
+
+
+    @Test
+    fun testBase64PaddingBehavior() = runBlocking {
+        // Test lengths that would normally require padding
+        val lengthsRequiringPadding = listOf(10, 17, 22) // Non-multiple-of-4 lengths
+
+        for (length in lengthsRequiringPadding) {
+            // Test with padding
+            val paddedResult = EnhancedRandom.generateEnhancedBase64String(
+                context, length, Base64Flags.Default
+            ).getOrThrow()
+
+            // Test without padding
+            val unpaddedResult = EnhancedRandom.generateEnhancedBase64String(
+                context, length, Base64Flags.NoPadding
+            ).getOrThrow()
+
+            assertEquals("Length mismatch with padding", length, paddedResult.length)
+            assertEquals("Length mismatch without padding", length, unpaddedResult.length)
+            assertFalse("Unpadded version should not contain padding",
+                unpaddedResult.contains("="))
+        }
+    }
+
+    private fun isValidBase64(str: String): Boolean {
+        return try {
+            Base64.decode(str, Base64.DEFAULT)
+            true
+        } catch (e: IllegalArgumentException) {
+            false
+        }
     }
 }

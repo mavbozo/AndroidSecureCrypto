@@ -12,7 +12,8 @@ A comprehensive, hardware-backed cryptography library for Android applications. 
   - Secure memory handling with automatic cleanup
   - Enhanced entropy mixing using Android Keystore
   - Automatic quality detection and fallback mechanisms
-
+  - Base64 string generation with URL-safe options
+  
 ## Roadmap
 
 Future releases will include:
@@ -80,9 +81,11 @@ class YourActivity : AppCompatActivity() {
 The library provides two main classes for random number generation:
 
 #### Random Class
+
 Basic secure random number generation:
 
 ```kotlin
+// Generate random bytes
 val randomResult = Random.create()
 randomResult.fold(
     onSuccess = { random ->
@@ -102,12 +105,38 @@ randomResult.fold(
         // Handle creation error
     }
 )
+
+// Standard Base64 with padding
+val base64Result = Random.generateBase64String(32)
+base64Result.fold(
+    onSuccess = { base64String ->
+        // Use base64String (e.g., "a1b2c3d4+/==")
+    },
+    onFailure = { error ->
+        // Handle error
+    }
+)
+
+// URL-safe Base64 without padding
+val urlSafeResult = Random.generateBase64String(
+    length = 32,
+    flags = Base64Flags.UrlSafeNoPadding
+)
+urlSafeResult.fold(
+    onSuccess = { urlSafeString ->
+        // Use URL-safe string (e.g., "a1b2c3d4-_")
+    },
+    onFailure = { error ->
+        // Handle error
+    }
+)
 ```
 
 #### EnhancedRandom Class
 Advanced random generation with additional hardware entropy:
 
 ```kotlin
+// Generate random bytes
 class YourActivity : AppCompatActivity() {
     private suspend fun useEnhancedRandom() {
         val randomResult = EnhancedRandom.create(context)
@@ -131,6 +160,27 @@ class YourActivity : AppCompatActivity() {
         )
     }
 }
+
+
+// Enhanced Base64 generation with hardware backing
+class YourActivity : AppCompatActivity() {
+    private suspend fun generateSecureBase64() {
+        val base64Result = EnhancedRandom.generateEnhancedBase64String(
+            context = context,
+            length = 32,
+            flags = Base64Flags.UrlSafe
+        )
+        base64Result.fold(
+            onSuccess = { base64String ->
+                // Use base64String
+            },
+            onFailure = { error ->
+                // Handle error
+            }
+        )
+    }
+}
+
 ```
 
 ## Security Architecture
