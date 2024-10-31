@@ -1,0 +1,52 @@
+# gradle/libs.version.toml
+
+[versions]
+# Build tools and Kotlin
+agp = "8.3.0"
+kotlin = "1.9.24"
+
+## Testing
+bouncycastle = "1.70"
+junit = "4.13.2"
+robolectric = "4.11.1"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.6.1"
+material = "1.11.0"
+mockito = "5.3.1"
+androidxTest = "1.5.0"
+
+# Security (core functionality)
+securityCrypto = "1.1.0-alpha06"
+
+# Concurrency
+coroutines = "1.7.3"
+
+
+[libraries]
+
+# Concurrency
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+
+# Security
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
+
+# Testing only
+bouncycastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncycastle" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTest" }
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+[bundles]
+coroutines = ["kotlinx-coroutines-android", "kotlinx-coroutines-core"]
+testing = ["junit", "androidx-junit", "androidx-espresso-core", "bouncycastle", "mockito-core", "androidx-test-core"]
