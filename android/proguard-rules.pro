@@ -7,8 +7,8 @@
 # Disable optimizations for cryptographic operations to prevent timing attacks
 -optimizations !code/simplification/arithmetic,!code/simplification/cast,!field/*,!class/merging/*,!code/allocation/variable
 
-# Disable any field or method renaming for crypto classes
--keepnames class com.mavbozo.securecrypto.** { *; }
+# Disable any field or method renaming for com.mavbozo.androidsecurecrypto classes
+-keepnames class com.mavbozo.androidsecurecrypto.** { *; }
 
 # Keep annotation information for library users
 -keepattributes *Annotation*
@@ -19,21 +19,21 @@
 # Keep source file names and line numbers for better stack traces
 -keepattributes SourceFile,LineNumberTable
 
-# Keep crypto provider information
+# Keep com.mavbozo.androidsecurecrypto provider information
 -keepattributes *Provider*
 
 # Keep all classes in our library
--keep class com.mavbozo.securecrypto.** { *; }
--keepclassmembers class com.mavbozo.securecrypto.** { *; }
+-keep class com.mavbozo.androidsecurecrypto.** { *; }
+-keepclassmembers class com.mavbozo.androidsecurecrypto.** { *; }
 
 # Keep all classes that implement EntropyQuality
--keep interface com.mavbozo.securecrypto.EntropyQuality { *; }
--keep class * implements com.mavbozo.securecrypto.EntropyQuality { *; }
+-keep interface com.mavbozo.androidsecurecrypto.EntropyQuality { *; }
+-keep class * implements com.mavbozo.androidsecurecrypto.EntropyQuality { *; }
 
 # Keep SecureBytes value class and its companion
--keep class com.mavbozo.securecrypto.SecureBytes {
+-keep class com.mavbozo.androidsecurecrypto.SecureBytes {
     private final byte[] bytes;
-    public static final com.mavbozo.securecrypto.SecureBytes$Companion Companion;
+    public static final com.mavbozo.androidsecurecrypto.SecureBytes$Companion Companion;
 }
 
 # Preserve Kotlin metadata
@@ -86,3 +86,19 @@
 -keep,allowshrinking class * {
     @androidx.annotation.Keep *;
 }
+
+# Handle string concatenation
+-dontwarn java.lang.invoke.StringConcatFactory
+
+# Generate detailed output files
+-printmapping build/outputs/mapping/mapping.txt
+-printseeds build/outputs/mapping/seeds.txt
+-printusage build/outputs/mapping/usage.txt
+-printconfiguration build/outputs/mapping/configuration.txt
+
+# Keep detailed source information for stack traces
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+
+# Show which items are being kept and why
+-whyareyoukeeping class com.mavbozo.androidsecurecrypto.**

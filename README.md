@@ -1,4 +1,4 @@
-# SecureCrypto
+# AndroidSecureCrypto
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
@@ -12,7 +12,7 @@ A comprehensive, hardware-backed cryptography library for Android applications. 
   - Secure memory handling with automatic cleanup
   - Enhanced entropy mixing using Android Keystore
   - Automatic quality detection and fallback mechanisms
-  - Base64 string generation with URL-safe options
+  - Hex and Base64 string generation with URL-safe options
   
 ## Roadmap
 
@@ -30,16 +30,16 @@ Add the dependency to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.mavbozo.securecrypto:securecrypto:0.1.0")
+    implementation("com.mavbozo.crypto:android:0.1.0")
 }
 ```
 
 ## Quick Start
 
-### Secure Random Generation
+### Basic Random Generation
 
 ```kotlin
-// Basic random bytes generation
+// Generate random bytes with automatic cleanup
 val bytesResult = Random.generateBytes(32)
 bytesResult.fold(
     onSuccess = { bytes ->
@@ -54,9 +54,38 @@ bytesResult.fold(
     }
 )
 
-// Enhanced random generation with hardware backing
+// Generate hex string
+val hexResult = Random.generateBytesAsHex(32)
+hexResult.fold(
+    onSuccess = { hexString ->
+        // Use hex string (e.g., "a1b2c3d4...")
+    },
+    onFailure = { error ->
+        // Handle error
+    }
+)
+
+// Generate Base64 string
+val base64Result = Random.generateBytesAsBase64(
+    size = 32,
+    flags = Base64Flags.Default // or UrlSafe, NoPadding, UrlSafeNoPadding
+)
+base64Result.fold(
+    onSuccess = { base64String ->
+        // Use base64 string
+    },
+    onFailure = { error ->
+        // Handle error
+    }
+)
+```
+
+### Enhanced Hardware-Backed Random Generation
+
+```kotlin
 class YourActivity : AppCompatActivity() {
     private suspend fun generateSecureRandom() {
+        // Generate random bytes
         val bytesResult = EnhancedRandom.generateEnhancedBytes(context, 32)
         bytesResult.fold(
             onSuccess = { bytes ->
@@ -70,13 +99,39 @@ class YourActivity : AppCompatActivity() {
                 // Handle error
             }
         )
+
+        // Generate hex string
+        val hexResult = EnhancedRandom.generateEnhancedBytesAsHex(context, 32)
+        hexResult.fold(
+            onSuccess = { hexString ->
+                // Use hex string
+            },
+            onFailure = { error ->
+                // Handle error
+            }
+        )
+
+        // Generate Base64 string
+        val base64Result = EnhancedRandom.generateEnhancedBytesAsBase64(
+            context = context,
+            size = 32,
+            flags = Base64Flags.UrlSafe
+        )
+        base64Result.fold(
+            onSuccess = { base64String ->
+                // Use base64 string
+            },
+            onFailure = { error ->
+                // Handle error
+            }
+        )
     }
 }
 ```
 
 ## Detailed Documentation
 
-### Secure Random Generation
+### Random Number Generation
 
 The library provides two main classes for random number generation:
 
@@ -85,7 +140,7 @@ The library provides two main classes for random number generation:
 Basic secure random number generation:
 
 ```kotlin
-// Generate random bytes
+// Create Random instance
 val randomResult = Random.create()
 randomResult.fold(
     onSuccess = { random ->
@@ -106,24 +161,24 @@ randomResult.fold(
     }
 )
 
-// Standard Base64 with padding
-val base64Result = Random.generateBase64String(32)
-base64Result.fold(
-    onSuccess = { base64String ->
-        // Use base64String (e.g., "a1b2c3d4+/==")
+// Generate random hex string
+val hexResult = Random.generateBytesAsHex(32)
+hexResult.fold(
+    onSuccess = { hexString ->
+        // Use hex string (e.g., "a1b2c3d4...")
     },
     onFailure = { error ->
         // Handle error
     }
 )
 
-// URL-safe Base64 without padding
-val urlSafeResult = Random.generateBase64String(
-    length = 32,
-    flags = Base64Flags.UrlSafeNoPadding
+// Generate Base64 with options
+val base64Result = Random.generateBytesAsBase64(
+    size = 32,
+    flags = Base64Flags.UrlSafeNoPadding // URL-safe, no padding
 )
-urlSafeResult.fold(
-    onSuccess = { urlSafeString ->
+base64Result.fold(
+    onSuccess = { base64String ->
         // Use URL-safe string (e.g., "a1b2c3d4-_")
     },
     onFailure = { error ->
@@ -133,12 +188,13 @@ urlSafeResult.fold(
 ```
 
 #### EnhancedRandom Class
+
 Advanced random generation with additional hardware entropy:
 
 ```kotlin
-// Generate random bytes
 class YourActivity : AppCompatActivity() {
     private suspend fun useEnhancedRandom() {
+        // Create EnhancedRandom instance
         val randomResult = EnhancedRandom.create(context)
         randomResult.fold(
             onSuccess = { random ->
@@ -158,21 +214,27 @@ class YourActivity : AppCompatActivity() {
                 // Handle creation error
             }
         )
-    }
-}
 
+        // Generate enhanced hex string
+        val hexResult = EnhancedRandom.generateEnhancedBytesAsHex(context, 32)
+        hexResult.fold(
+            onSuccess = { hexString ->
+                // Use hex string
+            },
+            onFailure = { error ->
+                // Handle error
+            }
+        )
 
-// Enhanced Base64 generation with hardware backing
-class YourActivity : AppCompatActivity() {
-    private suspend fun generateSecureBase64() {
-        val base64Result = EnhancedRandom.generateEnhancedBase64String(
+        // Generate enhanced Base64
+        val base64Result = EnhancedRandom.generateEnhancedBytesAsBase64(
             context = context,
-            length = 32,
+            size = 32,
             flags = Base64Flags.UrlSafe
         )
         base64Result.fold(
             onSuccess = { base64String ->
-                // Use base64String
+                // Use base64 string
             },
             onFailure = { error ->
                 // Handle error
@@ -180,8 +242,16 @@ class YourActivity : AppCompatActivity() {
         )
     }
 }
-
 ```
+
+## Base64 Encoding Options
+
+The library provides four Base64 encoding configurations via the `Base64Flags` sealed interface:
+
+1. `Base64Flags.Default`: Standard Base64 with padding
+2. `Base64Flags.NoPadding`: Standard Base64 without padding
+3. `Base64Flags.UrlSafe`: URL-safe Base64 with padding (uses `-` and `_` instead of `+` and `/`)
+4. `Base64Flags.UrlSafeNoPadding`: URL-safe Base64 without padding
 
 ## Security Architecture
 
@@ -245,7 +315,7 @@ secureBytes.use { bytes ->
 } // Automatic cleanup
 
 // Bad
-val exposed = secureBytes // No cleanup!
+val exposed = secureBytes.bytes // No cleanup!
 ```
 
 2. Handle both success and failure cases:
@@ -277,6 +347,10 @@ lifecycleScope.launch {
     }
 }
 ```
+
+## Releases
+
+- [v0.1.0](docs/releases/v0.1.0.md)
 
 ## License
 

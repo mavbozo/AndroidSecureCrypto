@@ -1,4 +1,4 @@
-package com.mavbozo.securecrypto
+package com.mavbozo.androidsecurecrypto
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -10,7 +10,6 @@ import org.junit.runner.RunWith
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import java.security.Provider
-import java.security.SecureRandom
 import java.security.Security
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 
@@ -23,11 +22,7 @@ class RandomTest {
         "AndroidKeyStore",
         1.0,
         "Test Android KeyStore Provider"
-    ) {
-        init {
-            // Empty provider - only needed for presence check
-        }
-    }
+    )
 
     @Before
     fun setup() {
@@ -89,13 +84,14 @@ class RandomTest {
     @Test
     fun `test generate hex string`() = runBlocking {
         val length = 32
-        val hexResult = Random.generateHexString(length)
+        val expectedLength = length * 2
+        val hexResult = Random.generateBytesAsHex(length)
 
         assertTrue("Hex string generation failed", hexResult.isSuccess)
         val hexString = hexResult.getOrThrow()
 
         assertNotNull("Generated hex string is null", hexString)
-        assertEquals("Hex string length mismatch", length, hexString.length)
+        assertEquals("Hex string length mismatch", expectedLength, hexString.length)
         assertTrue("Invalid hex string format",
             hexString.matches(Regex("[0-9a-f]+")))
     }
@@ -111,7 +107,7 @@ class RandomTest {
         assertTrue("Secure bytes generation failed", bytesResult.isSuccess)
 
         val secureBytes = bytesResult.getOrThrow()
-        var exposedBytes: ByteArray? = null
+        var exposedBytes: ByteArray?
 
         secureBytes.use { bytes ->
             exposedBytes = bytes.clone()
@@ -139,67 +135,133 @@ class RandomTest {
 
     // Base64Test
     @Test
-    fun `test generate base64 string`() = runBlocking {
+    fun `test standard base64 string format`() = runBlocking {
         val length = 32
-        val base64Result = Random.generateBase64String(length)
-
+        val base64Result = Random.generateBytesAsBase64(length, Base64Flags.Default)
+        
         assertTrue("Base64 string generation failed", base64Result.isSuccess)
         val base64String = base64Result.getOrThrow()
-
+        
         assertNotNull("Generated base64 string is null", base64String)
-        assertEquals("Base64 string length mismatch", length, base64String.length)
-        assertTrue("Invalid base64 string format",
-            base64String.matches(Regex("[A-Za-z0-9+/=]*")))
+        assertTrue("Invalid standard base64 format",
+            base64String.matches(Regex("^[A-Za-z0-9+/]+={0,2}$")))
+        assertFalse("Should not contain line breaks",
+            base64String.contains("\n") || base64String.contains("\r"))
     }
 
     @Test
-    fun `test base64 string with different flags`() = runBlocking {
+    fun `test base64 string without padding`() = runBlocking {
         val length = 32
-        val testCases = listOf(
-            Base64Flags.Default to Regex("[A-Za-z0-9+/=]*"),
-            Base64Flags.NoPadding to Regex("[A-Za-z0-9+/]*"),
-            Base64Flags.UrlSafe to Regex("[A-Za-z0-9_\\-=]*"),
-            Base64Flags.UrlSafeNoPadding to Regex("[A-Za-z0-9_\\-]*")
-        )
+        val base64Result = Random.generateBytesAsBase64(length, Base64Flags.NoPadding)
+        
+        assertTrue("Base64 string generation failed", base64Result.isSuccess)
+        val base64String = base64Result.getOrThrow()
+        
+        assertNotNull("Generated base64 string is null", base64String)
+        assertTrue("Invalid non-padded base64 format",
+            base64String.matches(Regex("^[A-Za-z0-9+/]+$")))
+        assertFalse("Should not contain padding",
+            base64String.contains("="))
+    }
 
-        for ((flag, regex) in testCases) {
-            val base64Result = Random.generateBase64String(length, flag)
-            assertTrue("Base64 string generation failed for flag: $flag",
-                base64Result.isSuccess)
+    @Test
+    fun `test url safe base64 string format`() = runBlocking {
+        val length = 32
+        val base64Result = Random.generateBytesAsBase64(length, Base64Flags.UrlSafe)
+        
+        assertTrue("Base64 string generation failed", base64Result.isSuccess)
+        val base64String = base64Result.getOrThrow()
+        
+        assertNotNull("Generated base64 string is null", base64String)
+        assertTrue("Invalid URL-safe base64 format",
+            base64String.matches(Regex("^[A-Za-z0-9_-]+={0,2}$")))
+        assertFalse("Should not contain URL-unsafe characters",
+            base64String.contains("+") || base64String.contains("/"))
+    }
 
-            val base64String = base64Result.getOrThrow()
-            assertNotNull("Generated base64 string is null for flag: $flag",
-                base64String)
-            assertEquals("Base64 string length mismatch for flag: $flag",
-                length, base64String.length)
-            assertTrue("Invalid base64 string format for flag: $flag",
-                base64String.matches(regex))
+    @Test
+    fun `test url safe base64 string without padding`() = runBlocking {
+        val length = 32
+        val base64Result = Random.generateBytesAsBase64(length, Base64Flags.UrlSafeNoPadding)
+        
+        assertTrue("Base64 string generation failed", base64Result.isSuccess)
+        val base64String = base64Result.getOrThrow()
+        
+        assertNotNull("Generated base64 string is null", base64String)
+        assertTrue("Invalid URL-safe non-padded base64 format",
+            base64String.matches(Regex("^[A-Za-z0-9_-]+$")))
+        assertFalse("Should not contain padding",
+            base64String.contains("="))
+        assertFalse("Should not contain URL-unsafe characters",
+            base64String.contains("+") || base64String.contains("/"))
+    }
+
+    @Test
+    fun `test padding behavior with different lengths`() = runBlocking {
+        val testLengths = listOf(1, 2, 3) // Will produce different padding lengths
+
+        for (length in testLengths) {
+            // Test Default (with padding)
+            val standardResult = Random.generateBytesAsBase64(length, Base64Flags.Default)
+            val standardString = standardResult.getOrThrow()
+            val expectedPadding = when (length % 3) {
+                0 -> 0
+                1 -> 2
+                else -> 1
+            }
+            assertEquals("Wrong padding length for standard encoding",
+                expectedPadding,
+                standardString.count { it == '=' })
+
+            // Test NoPadding
+            val noPaddingResult = Random.generateBytesAsBase64(length, Base64Flags.NoPadding)
+            val noPaddingString = noPaddingResult.getOrThrow()
+            assertFalse("NoPadding should not contain padding",
+                noPaddingString.contains("="))
         }
     }
 
     @Test
-    fun `test base64 string with odd lengths`() = runBlocking {
-        // Test odd lengths to verify proper padding handling
-        val lengths = listOf(1, 3, 7, 11)
+    fun `test base64 string lengths for various inputs`() = runBlocking {
+        // Map of input length to expected Base64 output length
+        val testCases = mapOf(
+            1 to 4,   // 1 byte → "X===" (4 chars)
+            2 to 4,   // 2 bytes → "XX==" (4 chars)
+            3 to 4,   // 3 bytes → "XXXX" (4 chars)
+            4 to 8,   // 4 bytes → "XXXXX===" (8 chars)
+            7 to 12,  // 7 bytes → "XXXXXXXXXX==" (12 chars)
+            11 to 16  // 11 bytes → "XXXXXXXXXXXXXXXX" (16 chars)
+        )
 
-        for (length in lengths) {
-            val base64Result = Random.generateBase64String(length)
-            assertTrue("Base64 string generation failed for length: $length",
+        for ((inputLength, expectedLength) in testCases) {
+            val base64Result = Random.generateBytesAsBase64(inputLength)
+            assertTrue("Base64 string generation failed for length: $inputLength",
                 base64Result.isSuccess)
 
             val base64String = base64Result.getOrThrow()
-            assertEquals("Base64 string length mismatch for length: $length",
-                length, base64String.length)
+            assertEquals("Base64 string length mismatch for input length: $inputLength",
+                expectedLength, base64String.length)
+
+            // Verify padding is present when expected
+            val expectedPaddingLength = when (inputLength % 3) {
+                0 -> 0
+                1 -> 2
+                2 -> 1
+                else -> throw IllegalStateException("Impossible modulo result")
+            }
+            assertEquals("Incorrect padding length for input length: $inputLength",
+                expectedPaddingLength,
+                base64String.count { it == '=' })
         }
     }
 
     @Test
     fun `test base64 string with zero length`() = runBlocking {
         try {
-            Random.generateBase64String(0).getOrThrow()
+            Random.generateBytesAsBase64(0).getOrThrow()
             fail("Should throw IllegalArgumentException")
         } catch (e: IllegalArgumentException) {
-            assertEquals("Length must be positive", e.message)
+            assertEquals("Size must be positive", e.message)
         }
     }
 
@@ -209,12 +271,12 @@ class RandomTest {
 
         for (negativeLength in negativeValues) {
             try {
-                Random.generateBase64String(negativeLength).getOrThrow()
+                Random.generateBytesAsBase64(negativeLength).getOrThrow()
                 fail("Should throw IllegalArgumentException for length $negativeLength")
             } catch (e: IllegalArgumentException) {
                 assertEquals(
                     "Invalid error message for length $negativeLength",
-                    "Length must be positive",
+                    "Size must be positive",
                     e.message
                 )
             }
@@ -228,7 +290,7 @@ class RandomTest {
         val generated = mutableSetOf<String>()
 
         repeat(count) {
-            val base64Result = Random.generateBase64String(length)
+            val base64Result = Random.generateBytesAsBase64(length)
             assertTrue("Base64 string generation failed", base64Result.isSuccess)
 
             val base64String = base64Result.getOrThrow()
@@ -240,7 +302,7 @@ class RandomTest {
     @Test
     fun `test base64 string memory cleanup`() = runBlocking {
         val length = 32
-        val base64Result = Random.generateBase64String(length)
+        val base64Result = Random.generateBytesAsBase64(length)
         assertTrue("Base64 string generation failed", base64Result.isSuccess)
 
         // Verify the internal byte array was cleaned up by checking heap

@@ -1,9 +1,10 @@
-# gradle/libs.version.toml
+	# gradle/libs.version.toml
 
 [versions]
 # Build tools and Kotlin
 agp = "8.3.0"
 kotlin = "1.9.24"
+medivh = "1.0.0"
 
 ## Testing
 bouncycastle = "1.70"
@@ -43,9 +44,12 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTest" }
 
+
+
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+medivh = { id = "tech.medivh.plugin.publisher", version.ref = "medivh"}
 
 [bundles]
 coroutines = ["kotlinx-coroutines-android", "kotlinx-coroutines-core"]
