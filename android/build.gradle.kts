@@ -12,7 +12,7 @@ group = "com.mavbozo.crypto"
 version = "0.1.0"
 
 android {
-    namespace = "com.mavbozo.androidsecurecrypto"
+    namespace = "com.mavbozo.crypto.androidsecurecrypto"
     compileSdk = 34
 
     defaultConfig {
@@ -93,7 +93,7 @@ deployer {
         description.set("An Android cryptography library for secure key generation and encryption")
         url.set("https://github.com/mavbozo/AndroidSecureCrypto")
         groupId.set("com.mavbozo.crypto")
-        artifactId.set("android")
+        artifactId.set("androidsecurecrypto")
         scm {
             url.set("https://github.com/mavbozo/AndroidSecureCrypto")
             connection.set("scm:git:git://github.com/mavbozo/AndroidSecureCrypto.git")
