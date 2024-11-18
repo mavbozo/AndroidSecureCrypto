@@ -84,8 +84,11 @@
   ```
 
 - [ ] Publication
+
+Deploy to Central Portal
+
   ```bash
-  ./gradlew publish
+  ./gradlew :android:deployCentralPortal
   ```
 
 - [ ] Verify Release

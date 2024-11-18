@@ -204,6 +204,13 @@ tasks.dokkaHtml.configure {
                 reportUndocumented.set(true)
                 includeNonPublic.set(false)
             }
+
+	    // Link to source code
+            sourceLink {
+                localDirectory.set(file("src/main/java"))
+                remoteUrl.set(java.net.URL("https://github.com/mavbozo/AndroidSecureCrypto/blob/main/src/main/java"))
+                remoteLineSuffix.set("#L")
+            }
         }
     }
 }
@@ -211,4 +218,11 @@ tasks.dokkaHtml.configure {
 // Generate documentation as part of the build
 tasks.named("build") {
     dependsOn(tasks.dokkaHtml)
+}
+
+// Add documentation generation to release process
+tasks.register("generateReleaseDocs") {
+    dependsOn("dokkaHtml")
+    group = "documentation"
+    description = "Generates documentation for release"
 }
