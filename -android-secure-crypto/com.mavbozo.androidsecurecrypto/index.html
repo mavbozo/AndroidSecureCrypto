@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.mavbozo.androidsecurecrypto</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../index.html">
+                            AndroidSecureCrypto
+                    </a>
+            </div>
+            <div class="library-version">
+0.2.0            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":android:dokkaHtml/release">androidJvm</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="AndroidSecureCrypto::com.mavbozo.androidsecurecrypto////PointingToDeclaration//-1521573681">
+  <div class="breadcrumbs"><a href="../../index.html">AndroidSecureCrypto</a><span class="delimiter">/</span><span class="current">com.mavbozo.androidsecurecrypto</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+    <div class="platform-hinted UnderCoverText" data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><p class="paragraph">Core cryptographic operations with hardware-backed security features.</p><h2 class="">Components</h2><h3 class="">Random Generation</h3><p class="paragraph">The <code class="lang-kotlin">Random</code> and <code class="lang-kotlin">EnhancedRandom</code> classes provide secure random number generation:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val random = Random.create()<br>random.nextSecureBytes(32)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h3 class="">Encryption</h3><p class="paragraph">The <code class="lang-kotlin">Cipher</code> class provides encryption and decryption operations:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val cipher = Cipher.create()<br>cipher.encryptString(key, plaintext)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h2 class="">Security Architecture</h2><h3 class="">Hardware Security</h3><ul><li><p class="paragraph">Hardware-backed key generation</p></li><li><p class="paragraph">Secure element integration</p></li><li><p class="paragraph">TEE utilization when available</p></li></ul><h3 class="">Memory Safety</h3><ul><li><p class="paragraph">Automatic cleanup</p></li><li><p class="paragraph">Secure memory handling</p></li><li><p class="paragraph">Resource management</p></li></ul><h3 class="">Error Handling</h3><ul><li><p class="paragraph">Explicit Result types</p></li><li><p class="paragraph">No silent failures</p></li><li><p class="paragraph">Comprehensive error reporting</p></li></ul><p class="paragraph">For implementation details, see ../README.md#security-architecture.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-22970968%2FClasslikes%2F-1521573681" anchor-label="AeadAlgorithm" id="-22970968%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-aead-algorithm/index.html"><span>Aead</span><wbr></wbr><span><span>Algorithm</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-22970968%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-aead-algorithm/index.html">AeadAlgorithm</a> : <a href="-iv-based-algorithm/index.html">IvBasedAlgorithm</a>, <a href="-authenticated-algorithm/index.html">AuthenticatedAlgorithm</a></div><div class="brief "><p class="paragraph">Interface for authenticated encryption with associated data (AEAD) algorithms</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="205174369%2FClasslikes%2F-1521573681" anchor-label="Aes" id="205174369%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-aes/index.html"><span><span>Aes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="205174369%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-aes/index.html">Aes</a></div><div class="brief "><p class="paragraph">Collection of AES-based encryption algorithms</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1675463353%2FClasslikes%2F-1521573681" anchor-label="AesGcmFormat" id="1675463353%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-aes-gcm-format/index.html"><span>Aes</span><wbr></wbr><span>Gcm</span><wbr></wbr><span><span>Format</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1675463353%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-aes-gcm-format/index.html">AesGcmFormat</a> : <a href="-cipher-format/index.html">CipherFormat</a></div><div class="brief "><p class="paragraph">Implementation of AES-GCM encryption format with 256-bit keys and 128-bit authentication tags.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-519603327%2FClasslikes%2F-1521573681" anchor-label="Algorithm" id="-519603327%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-algorithm/index.html"><span><span>Algorithm</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-519603327%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-algorithm/index.html">Algorithm</a></div><div class="brief "><p class="paragraph">Base interface for cryptographic algorithms supported by the library. Defines common properties required for algorithm implementation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="540845234%2FClasslikes%2F-1521573681" anchor-label="AuthenticatedAlgorithm" id="540845234%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-authenticated-algorithm/index.html"><span>Authenticated</span><wbr></wbr><span><span>Algorithm</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="540845234%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-authenticated-algorithm/index.html">AuthenticatedAlgorithm</a> : <a href="-algorithm/index.html">Algorithm</a></div><div class="brief "><p class="paragraph">Interface for authenticated encryption algorithms</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1803306456%2FClasslikes%2F-1521573681" anchor-label="Base64Flags" id="1803306456%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-base64-flags/index.html"><span><span>Base64Flags</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1803306456%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-base64-flags/index.html">Base64Flags</a></div><div class="brief "><p class="paragraph">Type-safe configuration options for Base64 encoding operations. Provides compile-time safety for Base64 encoding flags compared to raw integers.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1768556537%2FClasslikes%2F-1521573681" anchor-label="Cipher" id="-1768556537%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-cipher/index.html"><span><span>Cipher</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1768556537%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-cipher/index.html">Cipher</a></div><div class="brief "><p class="paragraph">Main cipher implementation providing secure encryption and decryption operations. Supports hardware-backed encryption when available and ensures secure cleanup of sensitive data.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1386687664%2FClasslikes%2F-1521573681" anchor-label="CipherFormat" id="-1386687664%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-cipher-format/index.html"><span>Cipher</span><wbr></wbr><span><span>Format</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1386687664%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-cipher-format/index.html">CipherFormat</a></div><div class="brief "><p class="paragraph">Interface defining supported encryption formats with their parameters and validation rules. Each format specifies its identifier, parameter structure, and key requirements.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2086002042%2FClasslikes%2F-1521573681" anchor-label="CipherHeader" id="2086002042%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-cipher-header/index.html"><span>Cipher</span><wbr></wbr><span><span>Header</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2086002042%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-cipher-header/index.html">CipherHeader</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>algorithm<span class="token operator">: </span><a href="-cipher-format/index.html">CipherFormat</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>params<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html">ByteArray</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Represents the header structure for encrypted data, containing format information and encryption parameters.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1348543239%2FClasslikes%2F-1521573681" anchor-label="EnhancedRandom" id="-1348543239%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-enhanced-random/index.html"><span>Enhanced</span><wbr></wbr><span><span>Random</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1348543239%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-enhanced-random/index.html">EnhancedRandom</a></div><div class="brief "><p class="paragraph">Enhanced random number generator using multiple entropy sources and hardware backing.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="7938852%2FClasslikes%2F-1521573681" anchor-label="EntropyQuality" id="7938852%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-entropy-quality/index.html"><span>Entropy</span><wbr></wbr><span><span>Quality</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="7938852%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-entropy-quality/index.html">EntropyQuality</a></div><div class="brief "><p class="paragraph">Represents the quality level of entropy sources available to the random number generator. This helps applications make informed decisions about the security level of generated random numbers.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2049743369%2FClasslikes%2F-1521573681" anchor-label="IvBasedAlgorithm" id="2049743369%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-iv-based-algorithm/index.html"><span>Iv</span><wbr></wbr><span>Based</span><wbr></wbr><span><span>Algorithm</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2049743369%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-iv-based-algorithm/index.html">IvBasedAlgorithm</a> : <a href="-algorithm/index.html">Algorithm</a></div><div class="brief "><p class="paragraph">Interface for algorithms requiring an initialization vector</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-388204465%2FClasslikes%2F-1521573681" anchor-label="Random" id="-388204465%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-random/index.html"><span><span>Random</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-388204465%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-random/index.html">Random</a></div><div class="brief "><p class="paragraph">Provides cryptographically secure random number generation with optional hardware backing.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="967582876%2FClasslikes%2F-1521573681" anchor-label="SecureBytes" id="967582876%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-secure-bytes/index.html"><span>Secure</span><wbr></wbr><span><span>Bytes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="967582876%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-secure-bytes/index.html">SecureBytes</a> <span><span class="token annotation builtin">@</span><a href="../com.mavbozo.androidsecurecrypto.internal/-internal-api/index.html"><span class="token annotation builtin">InternalApi</span></a> </span><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">bytes<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html">ByteArray</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">A secure wrapper for byte arrays that ensures proper cleanup of sensitive data. Implements automatic zeroing of memory when the data is no longer needed.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2024 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
