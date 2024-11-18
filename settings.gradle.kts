@@ -22,3 +22,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Android Secure Crypto"
 include(":android")
+
+// sample subproject
+include(":samples")
