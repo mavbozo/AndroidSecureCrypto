@@ -1,5 +1,7 @@
 // android/build.gradle.kts
 
+import java.net.URL
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -208,7 +210,7 @@ tasks.dokkaHtml.configure {
 	    // Link to source code
             sourceLink {
                 localDirectory.set(file("src/main/java"))
-                remoteUrl.set(java.net.URL("https://github.com/mavbozo/AndroidSecureCrypto/blob/main/src/main/java"))
+                remoteUrl.set(URL("https://github.com/mavbozo/AndroidSecureCrypto/blob/main/src/main/java"))
                 remoteLineSuffix.set("#L")
             }
         }
