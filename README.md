@@ -19,8 +19,6 @@ A comprehensive, hardware-backed cryptography library for Android applications. 
   - Automatic IV management and tag validation
   - String, byte array, and file encryption support
 
-Detailed feature documentation available in [FEATURES.md](FEATURES.md)
-
 ## Installation
 
 Add the dependency to your app's `build.gradle.kts`:
@@ -74,21 +72,18 @@ For more examples and detailed usage, see:
 - [Random Number Generation Guide](docs/random.md)
 - [Encryption Guide](docs/encryption.md)
 - [Security Architecture](docs/security.md)
-- [Best Practices Guide](docs/best-practices.md)
 
 ## Documentation
 
-- [API Reference](https://mavbozo.github.io/androidsecurecrypto/api/)
+- [API Reference](https://mavbozo.github.io/AndroidSecureCrypto/-android-secure-crypto/)
 - [Security Model](docs/security.md)
-- [Release Notes](CHANGELOG.md)
-- [Contributing Guide](CONTRIBUTING.md)
-- [FAQ](docs/faq.md)
+- [Release Notes](docs/releases)
 
 ## Support
 
 - File bug reports and feature requests via [GitHub Issues](https://github.com/mavbozo/androidsecurecrypto/issues)
 - For security issues, see our [Security Policy](SECURITY.md)
-- Questions? Check the [FAQ](docs/faq.md) or email mavbozo@pm.me
+- Questions? open github Issues or email mavbozo@pm.me
 
 ## License
 

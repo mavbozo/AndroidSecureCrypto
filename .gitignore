@@ -72,3 +72,7 @@ Thumbs.db
 # Backup Files
 *~
 *.bak
+
+# Docs file
+docs/api/
+docs/internal/
