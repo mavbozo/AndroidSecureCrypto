@@ -29,6 +29,10 @@ dependencies {
 }
 ```
 
+## Dokka Docs
+
+- [API Reference](https://mavbozo.github.io/AndroidSecureCrypto)
+
 ## Quick Start
 
 ### Random Number Generation
@@ -75,7 +79,7 @@ For more examples and detailed usage, see:
 
 ## Documentation
 
-- [API Reference](https://mavbozo.github.io/AndroidSecureCrypto/-android-secure-crypto/)
+- [API Reference](https://mavbozo.github.io/AndroidSecureCrypto)
 - [Security Model](docs/security.md)
 - [Release Notes](docs/releases)
 
