@@ -18,6 +18,17 @@ val cipher = Cipher.create()
 cipher.encryptString(key, plaintext)
 ```
 
+### Key Derivation
+The KeyDerivation class implements HKDF (HMAC-based Key Derivation Function) with domain separation:
+
+```kotlin
+val derivedKey = KeyDerivation.deriveKey(
+    masterKey = masterKey,
+    domain = "myapp.encryption",
+    context = "user-data-key"
+)
+```
+
 ## Security Architecture
 
 ### Hardware Security
@@ -35,7 +46,7 @@ cipher.encryptString(key, plaintext)
 - No silent failures
 - Comprehensive error reporting
 
-For implementation details, see [Security Architecture](../README.md#security-architecture).
+For implementation details, see [Security Architecture](https://github.com/mavbozo/AndroidSecureCrypto/blob/main/docs/security.md).
 
 # Package com.mavbozo.androidsecurecrypto.internal
 

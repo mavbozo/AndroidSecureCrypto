@@ -59,6 +59,33 @@
    - PARAMS: Algorithm parameters (variable)
    - CIPHERTEXT: Encrypted data with authentication tag
 
+### Key Derivation Implementation
+1. HKDF Details:
+   - HMAC-based Key Derivation Function (RFC 5869)
+   - Multiple hash algorithm support
+   - Domain separation enforcement
+   - Constant-time operations
+
+2. Algorithm Support:
+   - SHA-256 (default): 128-bit security level
+   - SHA-512: 256-bit security level
+   - SHA-1: Legacy compatibility only
+
+3. Domain Separation Format:
+   ```
+   com.mavbozo.androidsecurecrypto.<domain>.v1:<context>
+   ```
+   - Unique domain strings per purpose
+   - Version-tagged format
+   - Context-specific derivation
+   - Application isolation
+
+4. Memory Management:
+   - SecureBytes wrapper integration
+   - Automatic PRK cleanup
+   - Protected intermediate values
+   - Zero-on-cleanup guarantees
+
 ### Memory Management
 1. SecureBytes Wrapper:
    - Automatic memory zeroing
@@ -87,6 +114,13 @@
 - Key separation
 - IV uniqueness
 - Tag validation
+
+### Key Derivation
+- HMAC-based security proofs
+- Domain separation guarantees
+- Forward secrecy
+- Side-channel resistance
+- Memory cleanup assurance
 
 ### General Properties
 - No key material exposure
@@ -147,6 +181,26 @@ when (cipher.getProvider()) {
        onSuccess = { bytes -> /* ... */ },
        onFailure = { error -> /* ... */ }
    )
+   ```
+
+4. Key Derivation:
+   ```kotlin
+   // Generate master key
+   val masterKey = Random.generateBytes(32).getOrThrow()
+   try {
+       // Derive application-specific keys
+       val derivedKey = KeyDerivation.deriveKey(
+           masterKey = masterKey,
+           domain = "myapp.encryption",
+           context = "user-data-key"
+       ).getOrThrow()
+
+       derivedKey.use { bytes ->
+           // Use derived key
+       } // Key automatically zeroed
+   } finally {
+       masterKey.fill(0) // Clean up master key
+   }
    ```
 
 ## Security Reporting

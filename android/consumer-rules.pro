@@ -39,3 +39,60 @@
 # Handle Java 8+ string concat factory
 -dontwarn java.lang.invoke.StringConcatFactory
 -keep class java.lang.invoke.StringConcatFactory { *; }
+
+# Keep all KeyDerivation classes and interfaces
+-keep public class com.mavbozo.androidsecurecrypto.KeyDerivation { *; }
+-keep public enum com.mavbozo.androidsecurecrypto.HkdfAlgorithm { *; }
+
+# Protect cryptographic operations from optimization
+-keep,allowoptimization class com.mavbozo.androidsecurecrypto.KeyDerivation {
+    private void extractKey(byte[]);
+    private void expandKey(byte[], byte[], int);
+}
+
+# Keep all method names for security auditing
+-keepclassmembernames class com.mavbozo.androidsecurecrypto.KeyDerivation {
+    private void extractKey(byte[]);
+    private void expandKey(byte[], byte[], int);
+}
+
+# Prevent inlining of security-critical code
+-keepclassmembers,allowoptimization class com.mavbozo.androidsecurecrypto.KeyDerivation {
+    private static final int DEFAULT_KEY_SIZE;
+    private final com.mavbozo.androidsecurecrypto.HkdfAlgorithm algorithm;
+}
+
+# Keep HkdfAlgorithm enum values and properties
+-keepclassmembers enum com.mavbozo.androidsecurecrypto.HkdfAlgorithm {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+    public final String hmacAlgorithm;
+    public final int macLength;
+}
+
+# Keep cryptographic provider classes
+-keep class javax.crypto.** { *; }
+-keep class javax.crypto.spec.** { *; }
+-keep class javax.security.** { *; }
+-keepclassmembers class * extends javax.crypto.Mac { *; }
+
+# Preserve stacktraces for security debugging
+-keepattributes SourceFile,LineNumberTable,Exceptions,InnerClasses,Signature
+
+# Keep all annotations for security validation
+-keepattributes *Annotation*
+
+# Keep KeyDerivation public API and implementation
+-keep public class com.mavbozo.androidsecurecrypto.KeyDerivation { *; }
+-keep public enum com.mavbozo.androidsecurecrypto.HkdfAlgorithm { 
+    *;
+}
+
+# Keep companion object and its methods
+-keepclassmembers class com.mavbozo.androidsecurecrypto.KeyDerivation$Companion {
+    public static <methods>;
+}
+
+# Keep HMAC implementations
+-keep class javax.crypto.Mac { *; }
+-keep class javax.crypto.spec.SecretKeySpec { *; }

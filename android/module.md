@@ -5,6 +5,7 @@ A comprehensive, hardware-backed cryptography library for Android applications.
 This library provides:
 - Secure random number generation
 - Hardware-backed encryption
+- Hardware-backed key derivation
 - Memory-safe operations
 - Side-channel attack protections
 

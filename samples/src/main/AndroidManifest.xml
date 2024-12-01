@@ -25,5 +25,9 @@
             android:label="Cipher Samples"
             android:parentActivityName=".MainActivity" />
 
+        <activity
+            android:name=".keyderivation.KeyDerivationActivity"
+            android:exported="false" />
+
     </application>
 </manifest>

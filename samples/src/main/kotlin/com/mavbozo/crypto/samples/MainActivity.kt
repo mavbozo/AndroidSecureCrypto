@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.mavbozo.crypto.samples.random.RandomActivity
 import com.mavbozo.crypto.samples.cipher.CipherActivity
+import com.mavbozo.crypto.samples.keyderivation.KeyDerivationActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +30,14 @@ class MainActivity : AppCompatActivity() {
             text = "Cipher Samples"
             setOnClickListener {
                 startActivity(Intent(context, CipherActivity::class.java))
+            }
+            layout.addView(this)
+        }
+
+        Button(this).apply {
+            text = "Key Derivation Samples"
+            setOnClickListener {
+                startActivity(Intent(context, KeyDerivationActivity::class.java))
             }
             layout.addView(this)
         }

@@ -25,7 +25,7 @@ Add the dependency to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.mavbozo.crypto:android:0.2.0")
+    implementation("com.mavbozo.crypto:androidsecurecrypto:0.3.0")
 }
 ```
 
@@ -71,11 +71,6 @@ try {
     key.fill(0)
 }
 ```
-
-For more examples and detailed usage, see:
-- [Random Number Generation Guide](docs/random.md)
-- [Encryption Guide](docs/encryption.md)
-- [Security Architecture](docs/security.md)
 
 ## Documentation
 

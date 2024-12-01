@@ -10,9 +10,9 @@ plugins {
 }
 
 // Version constants
-val projectVersion = "0.2.0"
+val projectVersion = "0.3.0"
 group = "com.mavbozo.crypto"
-version = "0.2.0"
+version = "0.3.0"
 
 android {
     namespace = "com.mavbozo.crypto.androidsecurecrypto"

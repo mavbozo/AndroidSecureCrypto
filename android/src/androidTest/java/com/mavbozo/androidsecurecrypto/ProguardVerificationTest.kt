@@ -106,14 +106,17 @@ class ProguardVerificationTest {
             wasZeroed
         )
     }
+
     @Test
     fun verifyEntropyQualityPreserved() = runBlocking {
         val random = EnhancedRandom.create(context).getOrThrow()
 
         // Verify entropy quality enum is preserved
         val quality = random.getQuality()
-        assertTrue("Entropy quality should be hardware for EnhancedRandom",
-            quality is EntropyQuality.Hardware)
+        assertTrue(
+            "Entropy quality should be hardware for EnhancedRandom",
+            quality is EntropyQuality.Hardware
+        )
     }
 
     @Test
@@ -130,8 +133,10 @@ class ProguardVerificationTest {
 
         // Check if generation time is roughly proportional to size
         // This helps verify that optimizations haven't broken timing characteristics
-        assertTrue("Generation time should scale roughly linearly",
-            time2 < time1 * 3) // Allow some variance but should be roughly linear
+        assertTrue(
+            "Generation time should scale roughly linearly",
+            time2 < time1 * 3
+        ) // Allow some variance but should be roughly linear
     }
 
     private suspend fun measureTime(block: suspend () -> Unit): Long {
@@ -158,8 +163,10 @@ class ProguardVerificationTest {
             // Verify method names aren't obfuscated (should be readable)
             val methods = clazz.declaredMethods
             methods.forEach { method ->
-                assertFalse("Method ${method.name} should not be obfuscated",
-                    method.name.matches(Regex("^[a-z]{1,2}$")))
+                assertFalse(
+                    "Method ${method.name} should not be obfuscated",
+                    method.name.matches(Regex("^[a-z]{1,2}$"))
+                )
             }
         }
     }
@@ -191,34 +198,39 @@ class ProguardVerificationTest {
 
 
     @Test
-    fun testTimingSensitiveOperations() = runBlocking {
-        val random = EnhancedRandom.create(context).getOrThrow()
-        val timings = mutableListOf<Long>()
+    fun testTimingSensitiveOperations() {
+        runBlocking {
+            val random = EnhancedRandom.create(context).getOrThrow()
+            val timings = mutableListOf<Long>()
 
-        // Collect multiple timing samples
-        repeat(5) {
-            val time = measureNanoTime {
-                runBlocking {
-                    random.nextSecureBytes(32).getOrThrow().use { bytes ->
-                        // Just read the bytes
-                        bytes[0]
+            // Collect multiple timing samples
+            repeat(5) {
+                val time = measureNanoTime {
+                    runBlocking {
+                        random.nextSecureBytes(32).getOrThrow().use { bytes ->
+                            // Just read the bytes
+                            bytes[0]
+                        }
                     }
                 }
+                timings.add(time)
             }
-            timings.add(time)
+
+            // Calculate timing variance
+            val mean = timings.average()
+            val variance = timings.map { (it - mean) * (it - mean) }.average()
+            val stdDev = kotlin.math.sqrt(variance)
+
+            // Check for reasonable timing consistency
+            // Allow some variance but flag if it's too high (might indicate timing issues)
+            assertTrue(
+                "Operation timing should be reasonably consistent. " +
+                        "High variance might indicate timing vulnerabilities. " +
+                        "StdDev: $stdDev, Mean: $mean",
+                stdDev / mean < 0.5
+            ) // Adjust threshold based on your needs
         }
-
-        // Calculate timing variance
-        val mean = timings.average()
-        val variance = timings.map { (it - mean) * (it - mean) }.average()
-        val stdDev = kotlin.math.sqrt(variance)
-
-        // Check for reasonable timing consistency
-        // Allow some variance but flag if it's too high (might indicate timing issues)
-        assertTrue("Operation timing should be reasonably consistent. " +
-                "High variance might indicate timing vulnerabilities. " +
-                "StdDev: $stdDev, Mean: $mean",
-            stdDev / mean < 0.5) // Adjust threshold based on your needs
+        Unit
     }
 
     @Test
@@ -226,8 +238,10 @@ class ProguardVerificationTest {
         val random = EnhancedRandom.create(context).getOrThrow()
 
         // EnhancedRandom should always use hardware entropy
-        assertTrue("EnhancedRandom should use hardware entropy",
-            random.getQuality() is EntropyQuality.Hardware)
+        assertTrue(
+            "EnhancedRandom should use hardware entropy",
+            random.getQuality() is EntropyQuality.Hardware
+        )
 
         // Generate two sequences and verify they're different
         val seq1 = random.nextSecureBytes(32).getOrThrow()
@@ -235,8 +249,10 @@ class ProguardVerificationTest {
 
         seq1.use { bytes1 ->
             seq2.use { bytes2 ->
-                assertFalse("Generated sequences should be different",
-                    bytes1.contentEquals(bytes2))
+                assertFalse(
+                    "Generated sequences should be different",
+                    bytes1.contentEquals(bytes2)
+                )
             }
         }
     }
@@ -266,8 +282,10 @@ class ProguardVerificationTest {
         val random = EnhancedRandom.create(context).getOrThrow()
 
         // Verify hardware quality
-        assertTrue("EnhancedRandom should use hardware quality",
-            random.getQuality() is EntropyQuality.Hardware)
+        assertTrue(
+            "EnhancedRandom should use hardware quality",
+            random.getQuality() is EntropyQuality.Hardware
+        )
 
         // Generate two sequences
         val first = random.nextSecureBytes(32).getOrThrow()
@@ -275,8 +293,10 @@ class ProguardVerificationTest {
 
         first.use { bytes1 ->
             second.use { bytes2 ->
-                assertFalse("Random sequences should be different",
-                    bytes1.contentEquals(bytes2))
+                assertFalse(
+                    "Random sequences should be different",
+                    bytes1.contentEquals(bytes2)
+                )
 
                 assertTrue("Random bytes should not be all zeros",
                     bytes1.any { it != 0.toByte() })
@@ -309,5 +329,172 @@ class ProguardVerificationTest {
                     "StdDev: $stdDev, Mean: $mean",
             stdDev / mean < 0.5 // Allow some variance but flag if too high
         )
+    }
+
+    @Test
+    fun verifyKeyDerivationBasicFunctionality() = runBlocking {
+        // Test key generation for inputs
+        val masterKey = ByteArray(32) { it.toByte() }
+        try {
+            // Test with default parameters
+            val defaultResult = KeyDerivation.deriveKey(
+                masterKey = masterKey,
+                domain = "test.domain",
+                context = "test.context"
+            )
+
+            assertTrue("Basic key derivation should succeed", defaultResult.isSuccess)
+            defaultResult.getOrThrow().use { key ->
+                assertEquals("Derived key should have default size", 32, key.size)
+                assertFalse("Derived key should not be all zeros", key.all { it == 0.toByte() })
+            }
+
+            // Test each HKDF algorithm
+            HkdfAlgorithm.entries.forEach { algorithm ->
+                val algorithmResult = KeyDerivation.deriveKey(
+                    masterKey = masterKey,
+                    domain = "test.domain",
+                    context = "test.context",
+                    algorithm = algorithm
+                )
+
+                assertTrue(
+                    "Key derivation should succeed with ${algorithm.name}",
+                    algorithmResult.isSuccess
+                )
+
+                algorithmResult.getOrThrow().use { key ->
+                    assertFalse(
+                        "${algorithm.name} derived key should not be all zeros",
+                        key.all { it == 0.toByte() }
+                    )
+                }
+            }
+        } finally {
+            masterKey.fill(0)
+        }
+    }
+
+    @Test
+    fun verifyKeyDerivationMemoryCleanup() = runBlocking {
+        val masterKey = ByteArray(32) { it.toByte() }
+        try {
+            val derivedKey = KeyDerivation.deriveKey(
+                masterKey = masterKey,
+                domain = "test.domain",
+                context = "test.context"
+            ).getOrThrow()
+
+            var keyRef: ByteArray? = null
+            var wasNonZero = false
+
+            derivedKey.use { bytes ->
+                keyRef = bytes
+                wasNonZero = bytes.any { it != 0.toByte() }
+                assertTrue("Should have non-zero bytes during use", wasNonZero)
+            }
+
+            assertTrue(
+                "Key material should be zeroed after use",
+                keyRef?.all { it == 0.toByte() } ?: false
+            )
+        } finally {
+            masterKey.fill(0)
+        }
+    }
+
+    @Test
+    fun verifyKeyDerivationConsistency() {
+        runBlocking {
+            val masterKey = ByteArray(32) { it.toByte() }
+            try {
+                // Generate two keys with same parameters
+                val key1 = KeyDerivation.deriveKey(
+                    masterKey = masterKey,
+                    domain = "test.domain",
+                    context = "test.context"
+                ).getOrThrow()
+
+                val key2 = KeyDerivation.deriveKey(
+                    masterKey = masterKey,
+                    domain = "test.domain",
+                    context = "test.context"
+                ).getOrThrow()
+
+                var key1Bytes: ByteArray? = null
+                var key2Bytes: ByteArray? = null
+
+                key1.use { bytes1 ->
+                    key1Bytes = bytes1.clone()
+                }
+                key2.use { bytes2 ->
+                    key2Bytes = bytes2.clone()
+                }
+
+                assertTrue(
+                    "Same inputs should produce same key",
+                    key1Bytes!!.contentEquals(key2Bytes!!)
+                )
+
+                // Clean up cloned bytes
+                key1Bytes?.fill(0)
+                key2Bytes?.fill(0)
+            } finally {
+                masterKey.fill(0)
+            }
+        }
+        Unit
+    }
+
+    @Test
+    fun verifyKeyDerivationErrorHandling() = runBlocking {
+        // Test with invalid master key size
+        val shortKey = ByteArray(8) { it.toByte() }
+        val shortKeyResult = KeyDerivation.deriveKey(
+            masterKey = shortKey,
+            domain = "test.domain",
+            context = "test.context"
+        )
+
+        assertTrue("Should fail with short master key", shortKeyResult.isFailure)
+        assertTrue(
+            "Should have correct error type",
+            shortKeyResult.exceptionOrNull() is IllegalArgumentException
+        )
+
+        // Test with empty domain
+        val validKey = ByteArray(32) { it.toByte() }
+        try {
+            val emptyDomainResult = KeyDerivation.deriveKey(
+                masterKey = validKey,
+                domain = "",
+                context = "test.context"
+            )
+
+            assertTrue("Should fail with empty domain", emptyDomainResult.isFailure)
+            assertTrue(
+                "Should have correct error type",
+                emptyDomainResult.exceptionOrNull() is IllegalArgumentException
+            )
+        } finally {
+            validKey.fill(0)
+        }
+    }
+
+    @Test
+    fun verifyKeyDerivationEnumPreservation() {
+        // Verify all enum values are preserved
+        val algorithms = HkdfAlgorithm.entries
+        assertEquals(
+            "Should preserve all HKDF algorithms",
+            setOf("SHA256", "SHA512", "SHA1"),
+            algorithms.map { it.name }.toSet()
+        )
+
+        // Verify enum properties
+        algorithms.forEach { algorithm ->
+            assertNotNull("HMAC algorithm name should be preserved", algorithm.hmacAlgorithm)
+            assertTrue("MAC length should be positive", algorithm.macLength > 0)
+        }
     }
 }

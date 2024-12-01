@@ -1,6 +1,6 @@
 # AndroidSecureCrypto Pre-Release Checklist
 
-## Version: 0.2.0
+## Version: 0.3.0
 
 ### 1. Pre-Release Testing
 
@@ -36,6 +36,7 @@
   - [ ] Verify AES-GCM implementation
   - [ ] Check random number generation
   - [ ] Validate key management
+  - [ ] Verify KeyDerivation
   - [ ] Review error handling
 
 - [ ] Security Checks
@@ -79,8 +80,8 @@
 
 - [ ] Create Release Tag
   ```bash
-  git tag -a v0.2.0 -m "Release v0.2.0"
-  git push origin v0.2.0
+  git tag -a v0.3.0 -m "Release v0.3.0"
+  git push origin v0.3.0
   ```
 
 - [ ] Publication

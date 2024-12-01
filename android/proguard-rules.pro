@@ -102,3 +102,76 @@
 
 # Show which items are being kept and why
 -whyareyoukeeping class com.mavbozo.androidsecurecrypto.**
+
+# Keep all KeyDerivation classes and interfaces
+-keep public class com.mavbozo.androidsecurecrypto.KeyDerivation { *; }
+-keep public enum com.mavbozo.androidsecurecrypto.HkdfAlgorithm { *; }
+
+# Protect cryptographic operations from optimization
+-keep,allowoptimization class com.mavbozo.androidsecurecrypto.KeyDerivation {
+    private void extractKey(byte[]);
+    private void expandKey(byte[], byte[], int);
+}
+
+# Keep all method names for security auditing
+-keepclassmembernames class com.mavbozo.androidsecurecrypto.KeyDerivation {
+    private void extractKey(byte[]);
+    private void expandKey(byte[], byte[], int);
+}
+
+# Prevent inlining of security-critical code
+-keepclassmembers,allowoptimization class com.mavbozo.androidsecurecrypto.KeyDerivation {
+    private static final int DEFAULT_KEY_SIZE;
+    private final com.mavbozo.androidsecurecrypto.HkdfAlgorithm algorithm;
+}
+
+# Keep HkdfAlgorithm enum values and properties
+-keepclassmembers enum com.mavbozo.androidsecurecrypto.HkdfAlgorithm {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+    public final String hmacAlgorithm;
+    public final int macLength;
+}
+
+# Keep cryptographic provider classes
+-keep class javax.crypto.** { *; }
+-keep class javax.crypto.spec.** { *; }
+-keep class javax.security.** { *; }
+-keepclassmembers class * extends javax.crypto.Mac { *; }
+
+# Preserve stacktraces for security debugging
+-keepattributes SourceFile,LineNumberTable,Exceptions,InnerClasses,Signature
+
+# Keep all annotations for security validation
+-keepattributes *Annotation*
+
+# Protect KeyDerivation implementation
+-keepclassmembers class com.mavbozo.androidsecurecrypto.KeyDerivation {
+    private void extractKey(byte[]);
+    private void expandKey(byte[], byte[], int);
+}
+
+# Prevent optimization of cryptographic operations
+-keepclassmembers,allowoptimization class com.mavbozo.androidsecurecrypto.KeyDerivation {
+    private final com.mavbozo.androidsecurecrypto.HkdfAlgorithm algorithm;
+}
+
+# Keep HkdfAlgorithm properties
+-keepclassmembers enum com.mavbozo.androidsecurecrypto.HkdfAlgorithm {
+    public final java.lang.String hmacAlgorithm;
+    public final int macLength;
+}
+
+# Additional security for HMAC operations
+-keep class javax.crypto.Mac { *; }
+-keepclassmembers class javax.crypto.Mac { *; }
+-keep class javax.crypto.spec.SecretKeySpec { *; }
+
+# Keep annotations for security validation
+-keepattributes *Annotation*
+-keepattributes Signature
+-keepattributes InnerClasses
+
+# Keep debugging info for security auditing
+-keepattributes SourceFile,LineNumberTable
+-keepattributes Exceptions
