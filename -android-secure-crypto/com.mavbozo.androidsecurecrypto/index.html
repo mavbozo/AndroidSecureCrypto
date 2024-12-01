@@ -45,7 +45,7 @@
                     </a>
             </div>
             <div class="library-version">
-0.2.0            </div>
+0.3.0            </div>
         </div>
         <div class="filter-section" id="filter-section">
                 <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":android:dokkaHtml/release">androidJvm</button>
@@ -65,7 +65,7 @@
   <div class="breadcrumbs"><a href="../../index.html">AndroidSecureCrypto</a><span class="delimiter">/</span><span class="current">com.mavbozo.androidsecurecrypto</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
-    <div class="platform-hinted UnderCoverText" data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><p class="paragraph">Core cryptographic operations with hardware-backed security features.</p><h2 class="">Components</h2><h3 class="">Random Generation</h3><p class="paragraph">The <code class="lang-kotlin">Random</code> and <code class="lang-kotlin">EnhancedRandom</code> classes provide secure random number generation:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val random = Random.create()<br>random.nextSecureBytes(32)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h3 class="">Encryption</h3><p class="paragraph">The <code class="lang-kotlin">Cipher</code> class provides encryption and decryption operations:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val cipher = Cipher.create()<br>cipher.encryptString(key, plaintext)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h2 class="">Security Architecture</h2><h3 class="">Hardware Security</h3><ul><li><p class="paragraph">Hardware-backed key generation</p></li><li><p class="paragraph">Secure element integration</p></li><li><p class="paragraph">TEE utilization when available</p></li></ul><h3 class="">Memory Safety</h3><ul><li><p class="paragraph">Automatic cleanup</p></li><li><p class="paragraph">Secure memory handling</p></li><li><p class="paragraph">Resource management</p></li></ul><h3 class="">Error Handling</h3><ul><li><p class="paragraph">Explicit Result types</p></li><li><p class="paragraph">No silent failures</p></li><li><p class="paragraph">Comprehensive error reporting</p></li></ul><p class="paragraph">For implementation details, see ../README.md#security-architecture.</p></div></div>
+    <div class="platform-hinted UnderCoverText" data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><p class="paragraph">Core cryptographic operations with hardware-backed security features.</p><h2 class="">Components</h2><h3 class="">Random Generation</h3><p class="paragraph">The <code class="lang-kotlin">Random</code> and <code class="lang-kotlin">EnhancedRandom</code> classes provide secure random number generation:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val random = Random.create()<br>random.nextSecureBytes(32)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h3 class="">Encryption</h3><p class="paragraph">The <code class="lang-kotlin">Cipher</code> class provides encryption and decryption operations:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val cipher = Cipher.create()<br>cipher.encryptString(key, plaintext)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h3 class="">Key Derivation</h3><p class="paragraph">The KeyDerivation class implements HKDF (HMAC-based Key Derivation Function) with domain separation:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">val derivedKey = KeyDerivation.deriveKey(<br>    masterKey = masterKey,<br>    domain = &quot;myapp.encryption&quot;,<br>    context = &quot;user-data-key&quot;<br>)</code></pre><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><h2 class="">Security Architecture</h2><h3 class="">Hardware Security</h3><ul><li><p class="paragraph">Hardware-backed key generation</p></li><li><p class="paragraph">Secure element integration</p></li><li><p class="paragraph">TEE utilization when available</p></li></ul><h3 class="">Memory Safety</h3><ul><li><p class="paragraph">Automatic cleanup</p></li><li><p class="paragraph">Secure memory handling</p></li><li><p class="paragraph">Resource management</p></li></ul><h3 class="">Error Handling</h3><ul><li><p class="paragraph">Explicit Result types</p></li><li><p class="paragraph">No silent failures</p></li><li><p class="paragraph">Comprehensive error reporting</p></li></ul><p class="paragraph">For implementation details, see <a href="https://github.com/mavbozo/AndroidSecureCrypto/blob/main/docs/security.md">Security Architecture</a>.</p></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
@@ -237,6 +237,21 @@
               </div>
             </div>
           </div>
+<a data-name="1212277670%2FClasslikes%2F-1521573681" anchor-label="HkdfAlgorithm" id="1212277670%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-hkdf-algorithm/index.html"><span>Hkdf</span><wbr></wbr><span><span>Algorithm</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1212277670%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-hkdf-algorithm/index.html">HkdfAlgorithm</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-hkdf-algorithm/index.html">HkdfAlgorithm</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Supported HKDF algorithms with their corresponding HMAC functions.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
 <a data-name="2049743369%2FClasslikes%2F-1521573681" anchor-label="IvBasedAlgorithm" id="2049743369%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
           <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
             <div class="main-subrow keyValue ">
@@ -248,6 +263,21 @@
               <div>
                 <div class="title">
                   <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-iv-based-algorithm/index.html">IvBasedAlgorithm</a> : <a href="-algorithm/index.html">Algorithm</a></div><div class="brief "><p class="paragraph">Interface for algorithms requiring an initialization vector</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-100547110%2FClasslikes%2F-1521573681" anchor-label="KeyDerivation" id="-100547110%2FClasslikes%2F-1521573681" data-filterable-set=":android:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":android:dokkaHtml/release" data-filterable-set=":android:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-key-derivation/index.html"><span>Key</span><wbr></wbr><span><span>Derivation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-100547110%2FClasslikes%2F-1521573681"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":android:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-key-derivation/index.html">KeyDerivation</a></div><div class="brief "><p class="paragraph">Provides secure key derivation functionality using the HKDF (HMAC-based Key Derivation Function) algorithm as specified in RFC 5869. This implementation offers hardware-backed operation when available and automatic cleanup of sensitive key material.</p></div></div></div>
                 </div>
               </div>
             </div>
